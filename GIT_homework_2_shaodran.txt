@@ -1,0 +1,76 @@
+1. На локальном репозитории сделать ветки для:
+- Postman
+- Jmeter
+- CheckLists
+- Bag Reports
+- SQL
+- Charles
+- Mobile testing
+
+// Сначала нужно же репозиторий сделать. Пусть будет git_hw_2. 
+// Может можно массивом сделать - уточнить
+git branch Postman; git branch Jmeter; git branch Checklists; git branch Bug_Reports; git branchSQL; git branch Charles; git branch Mobile_Testing
+
+2. Запушить все ветки на внешний репозиторий
+git push origin --all
+
+3. В ветке Bag Reports сделать текстовый документ со структурой баг репорта
+// Переключимся сначала
+git checkout Bug_Reports
+// потом сам файл
+cat > structure.txt
+Id:
+Title:
+Severity:
+Priority:
+Environment:
+Precondition:
+Steps:
+Actual Result:
+Expected Result:
+File:
+Additinal Info:
+
+4. Запушить структуру багрепорта на внешний репозиторий
+// Добавим для отслеживания
+git add structure.txt
+// Коммитнем все это
+git commit -m "New file structure.txt added"
+// И только сейчас можно толкать его
+git push
+
+5. Вмержить ветку Bag Reports в Main
+// Переключимся в мэйн сначала и потом уже вмержим
+git checkout main
+git merge Bug_Reports -m "New merge"
+
+6. Запушить main на внешний репозиторий.
+git push
+
+
+7. В ветке CheckLists набросать структуру чек листа.
+//Перейти в ветку нужно
+git checkout Checklists
+// Потом аналогично создаем файл с нужным текстом
+cat >>checklist_structure.txt
+number:
+check:
+result:
+comment:
+
+8. Запушить структуру на внешний репозиторий
+// Добавим для отслеживания
+git add checklist_structure.txt
+// Коммитнем все это
+git commit -m "New file checklist_structure.txt added"
+// И только сейчас можно толкать его
+git push 
+
+9. На внешнем репозитории сделать Pull Request ветки CheckLists в main
+// Нажатием кнопки Compare & pull request переходим в просмотр реквеста, ставим коммент и Create pull request и затем Merge pull request - Confirm merge
+
+10. Синхронизировать Внешнюю и Локальную ветки Main
+// Так как были где-то не в мэйне, вернемся в мэйн
+git checkout main
+// И притянем из внешнего
+git pull
