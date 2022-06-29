@@ -86,7 +86,7 @@ let age_2 = 18
 let age_3 = 60
 
  29. Создать if в котором будите проверять значение переменной age_1
-
+if(age_1){}
 
  30. Если age_1 < age_2, вывести в консоль “You don’t have access cause your age is ” + age_1 + “ It’s less then ”
 if (age_1 < age_2){
@@ -94,12 +94,12 @@ console.log("You dont have access cause your age is " + age_1 + " It’s less th
 }
 
  31. Если age_1 >=  age_2 и age_1 <  age_3, вывести в консоль “Welcome  !”
-if (age_1 >=  age_2 && age_1 <  age_3){
+else if (age_1 >=  age_2 && age_1 <  age_3){
     console.log("Welcome  !")    
 }
 
  32. Если age_1  > age_3, вывести в консоль “Keep calm and look Culture channel”.
-if(age_1  > age_3){
+else if(age_1  > age_3){
 console.log("Keep calm and look Culture channel") 
 }
 
@@ -203,3 +203,24 @@ const checkAge3 = function(age){
 
 4***:
 Преобразовать задание 3* таким образом, чтобы возраст вводится используя функцию prompt в привязанной верстке
+//Добавим запрос на ввод значения от пользователя checkAge4(prompt('Enter age')) и выведем в alert вместо console.log
+const checkAge4 = function(age){
+    if (age && !isNaN(age)){
+    if (age < age_2){
+    alert("You dont have access cause your age is " + age + " It’s less then ")
+    }
+    else if (age >=  age_2 && age <  age_3){
+    alert("Welcome !")    
+    }
+    else if(age > age_3){
+    alert("Keep calm and look Culture channel")
+    }
+    else{
+    alert("Technical work")
+    }
+    } 
+       else {
+    alert("ERROR - must be a nuber. Not <"+ age+">")
+    }
+}
+checkAge4(prompt('Enter age'))
