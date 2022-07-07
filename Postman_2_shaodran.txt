@@ -322,11 +322,80 @@ P.S. ЗАДАНИЕ НЕ ПОДРАЗУМЕВАЕТ, ЧТО ЭНДПОИНТ Р�
 
 2. http://162.55.220.72:5007/object_info_4
 * Преобразовать пункты 12-13-14 (salary из реквеста и респонса равны) таким образом, чтобы проверка производилась циклом, в котором будет всего ОДИН тест. Имя теста должно меняться в зависимости от значения в Salary
+let responsesalary = pm.response.json().salary;
+let requestsalary = + pm.request.url.query.get('salary');
+//console.log(requestsalary);
+//console.log(responsesalary);
+
+responsesalary.forEach((salary, index) =>{
+    pm.test(requestsalary+"* "+(index+1)+"= "+salary,() =>{
+        pm.expect(requestsalary*(index+1)).to.eql(+salary)
+    })
+})
+
 
 3. http://162.55.220.72:5005/object_info_3
  Преобразовать задания 5-7 (сравнить идентичные поля в реквесте и респонсе) таким образом, чтобы это делалось ЗА ОДИН ТЕСТ (сразу все 3 поля) БЕЗ ЦИКЛОВ! (глубокое сравнение объектов)
+let requestdata = pm.request.url.query.toObject();
+let responsedata = {
+    age: String(pm.response.json().age),
+    name: (pm.response.json().name),
+    salary: String(pm.response.json().salary)    
+}
+console.log(requestdata);
+console.log(responsedata);
+
+pm.test("Request object is equals response", () =>{
+    pm.expect(requestdata).to.deep.eql(responsedata)
+})
+
+//Варинат номер два, сложнее
+const responsejson= pm.response.json();
+const resp ={};
+for (const key in requestdata){
+    resp[key] = isNaN(responsejson[key]) ? responsejson[key] : +responsejson[key]
+    requestdata[key] = isNaN(requestdata[key]) ? requestdata[key] : +requestdata[key]
+}
+pm.test("Request object is equals response test v2", () =>{
+    pm.expect(requestdata).to.deep.eql(resp)
+})
+
 
 4. http://162.55.220.72:5005/user_info_2
 1)  Преобразовать задания 8 - 13 (проверить что в json имеется нужный параметр) таким образом, чтобы все проверки делались в цикле (1 проверка в цикле, в которую попадают нужные параметры). Название теста должно видоизменяться исходя из подаваемых данных. ( ${}  или другим способом)
+const responsejson = pm.response.json();
+const keysinjson=["start_qa_salary", "qa_salary_after_6_months", "qa_salary_after_3.5_years", "qa_salary_after_12_months", "qa_salary_after_1.5_year", "person"]
+keysinjson.forEach(key=>{
+    pm.test("Response has a key = "+key, () =>{
+        pm.expect(responsejson).to.have.property(key)
+    })
+})
+
 2) ** Преобразовать задания 14 - 18 (проверить что параметр равен salary умножить на коэффициент) таким образом, чтобы все проверки делались в цикле (1 проверка в цикле, в которую попадают нужные параметры). Название теста должно видоизменяться исходя из подаваемых данных. ( ${}  или другим способом)
+// к продолжению прошлого задания
+const salary = pm.environment.get("salary")
+const counters = {
+    "start_qa_salary":1,
+    "qa_salary_after_6_months":2,
+    "qa_salary_after_3.5_years":3.8,
+    "qa_salary_after_12_months": 2.7,
+    "qa_salary_after_1.5_year": 3.3
+}
+for (const key in counters){
+pm.test(key+" from response = salary request*"+counters[key],() =>{
+    pm.expect(+responsejson[key]).to.eql(salary*counters[key])
+})
+}
+
 3) *** Преобразовать описанные выше задания 1 и 2 для данного эндпоинта в ОДИН ЦИКЛ, в котором будут проходить ОБА теста.
+counters["person"]=""
+for (const key in counters){
+        pm.test("Response has a key = "+key, () =>{
+        pm.expect(responsejson).to.have.property(key)
+    if (key !="person"){
+        pm.test(key+" from response = salary request*"+counters[key],() =>{
+    pm.expect(+responsejson[key]).to.eql(salary*counters[key])
+})
+    }
+    })
+}
